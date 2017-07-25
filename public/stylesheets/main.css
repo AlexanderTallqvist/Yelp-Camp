@@ -1,0 +1,24 @@
+
+/* Style thumbnail images */
+
+.thumbnail {
+  padding: 0;
+}
+
+.thumbnail img {
+  width: 100%;
+}
+
+
+/* Style captions */
+
+.thumbnail .caption-full {
+  padding: 9px;
+}
+
+
+/* Delete form */
+
+.delete-form {
+  display: inline;
+}
