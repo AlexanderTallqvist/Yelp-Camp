@@ -4,6 +4,7 @@ var express         = require("express"),
     localStrategy   = require("passport-local"),
     bodyParser      = require("body-parser"),
     mongoose        = require("mongoose"),
+    flash           = require("connect-flash"),
     passport        = require("passport"),
     Campground      = require("./models/campground"),
     Comment         = require("./models/comment"),
@@ -26,6 +27,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 // Initialize method-override
 app.use(methodOverride("_method"));
 
+// Setup flash messages
+app.use(flash());
+
 // We server our public files
 app.use(express.static(__dirname + "/public"));
 
@@ -36,7 +40,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(require("express-session")({
   secret: "Rusty wins cutest dog!",
   resave: false,
-  saveUninitialize: false
+  saveUninitialized: false
 }));
 
 app.use(passport.initialize());
@@ -46,9 +50,12 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Pass in the currentUser object to every template
+// Pass in the currentUser object and the
+// flash message to every template
 app.use(function(req, res, next){
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
   next();
 });
 
